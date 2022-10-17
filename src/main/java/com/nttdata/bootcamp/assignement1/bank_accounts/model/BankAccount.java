@@ -24,6 +24,9 @@ public class BankAccount {
     Integer id;
     String accountNumber;
     String cciNumber;
+    double taxMaintenance;
+    int maxMonthMovement;
+    String costumerType;
     BankAccountType bankAccountType;
     // lista de los costumerId, titulares de la cuenta bancaria
     List<Integer> headlines;

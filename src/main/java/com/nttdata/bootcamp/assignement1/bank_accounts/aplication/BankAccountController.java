@@ -16,26 +16,25 @@ public class BankAccountController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<BankAccount> createCostumer(@RequestBody BankAccount bankAccount){
-        System.out.println(bankAccount);
+    public Mono<BankAccount> createBankAccount(@RequestBody BankAccount bankAccount){
         return bankAccountService.createCostumer(Mono.just(bankAccount));
     }
 
     @GetMapping(value = "get/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<BankAccount> getCostumerById(@PathVariable("id") Integer id){
+    public Mono<BankAccount> getBankAccountById(@PathVariable("id") Integer id){
         return bankAccountService.readCostumer(id);
     }
 
     @PutMapping(value = "update/{id}")
     @ResponseBody
-    public Mono<BankAccount> updateCostumer(@RequestBody BankAccount bankAccount){
+    public Mono<BankAccount> updateBankAccount(@RequestBody BankAccount bankAccount){
         return bankAccountService.updateCostumer(bankAccount);
     }
 
     @DeleteMapping(value = "delete/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Void> deleteCostumerById(@PathVariable("id") Integer id){
+    public Mono<Void> deleteBankAccountById(@PathVariable("id") Integer id){
         return bankAccountService.deleteCostumer(id);
     }
 

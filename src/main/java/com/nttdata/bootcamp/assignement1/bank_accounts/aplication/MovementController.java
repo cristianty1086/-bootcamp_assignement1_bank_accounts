@@ -16,26 +16,26 @@ public class MovementController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Movement> createCostumer(@RequestBody Movement movement){
+    public Mono<Movement> createMovement(@RequestBody Movement movement){
         System.out.println(movement);
         return movementService.createCostumer(Mono.just(movement));
     }
 
     @GetMapping(value = "get/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Movement> getCostumerById(@PathVariable("id") Integer id){
+    public Mono<Movement> getMovementById(@PathVariable("id") Integer id){
         return movementService.readCostumer(id);
     }
 
     @PutMapping(value = "update/{id}")
     @ResponseBody
-    public Mono<Movement> updateCostumer(@RequestBody Movement movement){
+    public Mono<Movement> updateMovement(@RequestBody Movement movement){
         return movementService.updateCostumer(movement);
     }
 
     @DeleteMapping(value = "delete/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Void> deleteCostumerById(@PathVariable("id") Integer id){
+    public Mono<Void> deleteMovementById(@PathVariable("id") Integer id){
         return movementService.deleteCostumer(id);
     }
 
