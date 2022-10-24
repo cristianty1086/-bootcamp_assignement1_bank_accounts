@@ -40,6 +40,15 @@ public class BankAccountServiceImpl implements BankAccountService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Indique el tipo de cuenta", null);
         }
 
+        // Monto minimo de apertura igual a cero
+        if( bankAccount.getMinimalOpenAmount() < 0 ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Monto minimo de apertura es de cero", null);
+        }
+
+        // maximo numero de operaciones al mes sin comision
+        bankAccount.setMaxOperationWhithoutComision(50); // prueba 50
+        bankAccount.setTaxComision(0.02); // por ejemplo 2%
+
         // considerando tasas y maximo de movimientos al mes segun tipo de cuenta
         if( bankAccount.getBankAccountType() == BankAccountType.current_account ) {
             bankAccount.setTaxMaintenance(0.0d);

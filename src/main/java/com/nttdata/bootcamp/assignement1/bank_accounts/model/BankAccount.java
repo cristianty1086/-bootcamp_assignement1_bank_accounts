@@ -26,6 +26,7 @@ public class BankAccount {
     String cciNumber;
     double taxMaintenance;
     int maxMonthMovement;
+    double minimalOpenAmount;
     String costumerType;
     Integer costumerId;
     BankAccountType bankAccountType;
@@ -33,4 +34,6 @@ public class BankAccount {
     List<Integer> headlines;
     // lista de los costumerId, firmantes de la cuenta bancaria
     List<Integer> signatories;
+    int maxOperationWhithoutComision;
+    double taxComision;
 }
