@@ -33,23 +33,13 @@ public class MovementServiceImpl implements MovementService {
     @Override
     public Mono<Movement> updateCostumer(Movement movement) {
         LOGGER.info("Solicitud realizada para actualizar al Movement");
-        movementRepository.findById(movement.getId())
-                .map( currMovement -> {
-                    LOGGER.info("Cliente encontrado para el id: " + movement.getId());
-                    currMovement.setMovementType(movement.getMovementType());
-                    currMovement.setAmount(movement.getAmount());
-                    currMovement.setBankAccountId(movement.getBankAccountId());
-                    return movementRepository.save(currMovement);
-                });
-
-        return Mono.just(movement);
+        return movementRepository.save(movement);
     }
 
     @Override
     public Mono<Void> deleteCostumer(Integer movementId) {
         LOGGER.info("Solicitud realizada para crear Movement");
-        movementRepository.deleteById(movementId);
-        return null;
+        return movementRepository.deleteById(movementId);
     }
 
     @Override

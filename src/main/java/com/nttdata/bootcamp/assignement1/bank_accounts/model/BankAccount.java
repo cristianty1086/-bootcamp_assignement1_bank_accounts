@@ -27,6 +27,7 @@ public class BankAccount {
     double taxMaintenance;
     int maxMonthMovement;
     String costumerType;
+    Integer costumerId;
     BankAccountType bankAccountType;
     // lista de los costumerId, titulares de la cuenta bancaria
     List<Integer> headlines;

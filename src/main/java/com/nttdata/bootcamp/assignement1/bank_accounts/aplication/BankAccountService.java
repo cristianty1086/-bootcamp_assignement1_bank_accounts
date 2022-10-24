@@ -7,13 +7,14 @@ import reactor.core.publisher.Mono;
 public interface BankAccountService {
 
     // crear
-    Mono<BankAccount> createCostumer(Mono<BankAccount> bankAccount);
+    Mono<BankAccount> createBankAccount(BankAccount bankAccount);
     // leer
-    Mono<BankAccount> readCostumer(Integer bankAccountId);
+    Mono<BankAccount> readBankAccount(Integer bankAccountId);
     // actualizar
-    Mono<BankAccount> updateCostumer(BankAccount bankAccount);
+    Mono<BankAccount> updateBankAccount(BankAccount bankAccount);
     // delete
-    Mono<Void> deleteCostumer(Integer bankAccountId);
+    Mono<Void> deleteBankAccount(Integer bankAccountId);
     // leer todas
     Flux<BankAccount> listarTodos();
+    Mono<Long> countAccountByType(Integer bankAccountId, Integer bankAccountType);
 }

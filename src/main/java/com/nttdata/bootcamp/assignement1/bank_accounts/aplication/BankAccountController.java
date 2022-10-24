@@ -17,31 +17,37 @@ public class BankAccountController {
     @PostMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<BankAccount> createBankAccount(@RequestBody BankAccount bankAccount){
-        return bankAccountService.createCostumer(Mono.just(bankAccount));
+        return bankAccountService.createBankAccount(bankAccount);
     }
 
     @GetMapping(value = "get/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public Mono<BankAccount> getBankAccountById(@PathVariable("id") Integer id){
-        return bankAccountService.readCostumer(id);
+        return bankAccountService.readBankAccount(id);
     }
 
     @PutMapping(value = "update/{id}")
     @ResponseBody
     public Mono<BankAccount> updateBankAccount(@RequestBody BankAccount bankAccount){
-        return bankAccountService.updateCostumer(bankAccount);
+        return bankAccountService.updateBankAccount(bankAccount);
     }
 
     @DeleteMapping(value = "delete/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public Mono<Void> deleteBankAccountById(@PathVariable("id") Integer id){
-        return bankAccountService.deleteCostumer(id);
+        return bankAccountService.deleteBankAccount(id);
     }
 
     @GetMapping(value = "getAll", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public Flux<BankAccount> listarTodos(){
         return bankAccountService.listarTodos();
+    }
+
+    @GetMapping(value = "count_accounts_by_type/{id}/{type}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseBody
+    public Mono<Long> countAccountByType(@PathVariable("id") Integer id, @PathVariable("type") Integer type){
+        return bankAccountService.countAccountByType(id, type);
     }
 
 }
