@@ -18,9 +18,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Movement {
     @Id
-    Integer id;
+    String id;
     String registerDate;
     MovementType movementType;
     double amount;
-    Integer bankAccountId;
+    String bankAccountId;
 }

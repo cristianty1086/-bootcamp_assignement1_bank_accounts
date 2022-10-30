@@ -7,13 +7,13 @@ import reactor.core.publisher.Mono;
 public interface MovementService {
 
     // crear
-    Mono<Movement> createCostumer(Mono<Movement> movement);
+    Mono<Movement> createMovement(Movement movement);
     // leer
-    Mono<Movement> readCostumer(Integer movementId);
+    Mono<Movement> readMovement(String movementId);
     // actualizar
-    Mono<Movement> updateCostumer(Movement movement);
+    Mono<Movement> updateMovement(Movement movement);
     // delete
-    Mono<Void> deleteCostumer(Integer movementId);
+    Mono<Void> deleteMovement(String movementId);
     // leer todas
     Flux<Movement> listarTodos();
 }

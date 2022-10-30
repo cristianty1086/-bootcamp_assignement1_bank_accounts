@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigInteger;
+
 
 @RestController
 @RequestMapping("bank_account")
@@ -21,13 +23,19 @@ public class BankAccountController {
         return bankAccountService.createBankAccount(bankAccount);
     }
 
-    @GetMapping(value = "get/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Mono<BankAccount> getBankAccountById(@PathVariable("id") Integer id){
+    public Mono<BankAccount> getBankAccountById(@PathVariable("id") String id){
         return bankAccountService.readBankAccount(id);
     }
 
-    @PutMapping(value = "update/{id}")
+    @GetMapping(value = "get_by_costumer/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Flux<BankAccount> getCostumerId(@PathVariable("id") BigInteger id){
+        return bankAccountService.readBankAccountByCostumer(id);
+    }
+
+    @PutMapping(value = "update")
     @ResponseBody
     public Mono<BankAccount> updateBankAccount(@RequestBody BankAccount bankAccount){
         return bankAccountService.updateBankAccount(bankAccount);
@@ -35,7 +43,7 @@ public class BankAccountController {
 
     @DeleteMapping(value = "delete/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Void> deleteBankAccountById(@PathVariable("id") Integer id){
+    public Mono<Void> deleteBankAccountById(@PathVariable("id") String id){
         return bankAccountService.deleteBankAccount(id);
     }
 
@@ -45,9 +53,9 @@ public class BankAccountController {
         return bankAccountService.listarTodos();
     }
 
-    @GetMapping(value = "count_accounts_by_type/{id}/{type}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "count_accounts_by_type/{id}/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Mono<Long> countAccountByType(@PathVariable("id") Integer id, @PathVariable("type") Integer type){
+    public Mono<Long> countAccountByType(@PathVariable("id") BigInteger id, @PathVariable("type") Integer type){
         return bankAccountService.countAccountByType(id, type);
     }
 

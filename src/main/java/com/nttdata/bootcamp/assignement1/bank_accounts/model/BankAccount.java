@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -21,14 +22,14 @@ import java.util.List;
 @NoArgsConstructor
 public class BankAccount {
     @Id
-    Integer id;
+    String id;
     String accountNumber;
     String cciNumber;
     double taxMaintenance;
     int maxMonthMovement;
     double minimalOpenAmount;
     String costumerType;
-    Integer costumerId;
+    BigInteger costumerId;
     BankAccountType bankAccountType;
     // lista de los costumerId, titulares de la cuenta bancaria
     List<Integer> headlines;
@@ -36,4 +37,5 @@ public class BankAccount {
     List<Integer> signatories;
     int maxOperationWhithoutComision;
     double taxComision;
+    double balance;
 }

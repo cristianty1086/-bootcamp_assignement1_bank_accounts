@@ -3,6 +3,8 @@ package com.nttdata.bootcamp.assignement1.bank_accounts.aplication;
 import com.nttdata.bootcamp.assignement1.bank_accounts.infraestructure.BankAccountRepository;
 import com.nttdata.bootcamp.assignement1.bank_accounts.model.BankAccount;
 import com.nttdata.bootcamp.assignement1.bank_accounts.model.BankAccountType;
+import com.nttdata.bootcamp.assignement1.bank_accounts.utilities.AppConstants;
+import com.nttdata.bootcamp.assignement1.bank_accounts.utilities.BuilderUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Optional;
+import java.math.BigInteger;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -64,21 +65,14 @@ public class BankAccountServiceImpl implements BankAccountService {
         if( bankAccount.getCostumerType().equals("person") ) {
             // el cliente personal solo puede tener un maximo de una cuenta de ahorro,
             // una cuenta corriente o cuentas a plazo fijo.
-            //Flux<BankAccount> accounts = bankAccountRepository.findByCostumerId(bankAccount.getCostumerId());
-            StringBuilder ss = new StringBuilder();
-            ss.append("http://localhost:8084/bank_account/count_accounts_by_type/");
-            ss.append(bankAccount.getCostumerId());
-            ss.append("/");
-            ss.append(bankAccount.getBankAccountType().ordinal()+1);
-
+            String url = BuilderUrl.buildCountAccountsByType(bankAccount.getCostumerId(),
+                    bankAccount.getBankAccountType());
             RestTemplate restTemplate = new RestTemplate();
-            String a1 = restTemplate.getForObject(ss.toString(), String.class);
-            if( a1 == null || a1.isEmpty() || !a1.contains(":") ) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Solo se permite una cuenta como maximo", null);
-            }
-            String a2 = a1.replace("\n","").split(":")[1];
-            long count = Long.valueOf(a2);
+            Long count = restTemplate.getForObject(url, Long.class);
 
+            if( count == null ) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: al obtener el numero de cuentas del cliente por tipo de cuenta. Contactese con el soporte tecnico.", null);
+            }
             if(count > 0) {
                 if(bankAccount.getBankAccountType() == BankAccountType.saving_account) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Solo se permite una cuenta de ahorro como maximo", null);
@@ -106,9 +100,15 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public Mono<BankAccount> readBankAccount(Integer bankAccountId) {
+    public Mono<BankAccount> readBankAccount(String bankAccountId) {
         LOGGER.info("Solicitud realizada para obtener la informacion de un BankAccount");
         return bankAccountRepository.findById(bankAccountId);
+    }
+
+    @Override
+    public Flux<BankAccount> readBankAccountByCostumer(BigInteger costumerId) {
+        LOGGER.info("Solicitud realizada para obtener las cuentas bancarias de un cliente");
+        return bankAccountRepository.findByCostumerId(costumerId);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public Mono<Void> deleteBankAccount(Integer bankAccountId) {
+    public Mono<Void> deleteBankAccount(String bankAccountId) {
         LOGGER.info("Solicitud realizada para crear BankAccount");
         return bankAccountRepository.deleteById(bankAccountId);
     }
@@ -130,18 +130,18 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public Mono<Long> countAccountByType(Integer bankAccountId, Integer bankAccountType) {
+    public Mono<Long> countAccountByType(BigInteger costumerId, Integer bankAccountType) {
 
         if(bankAccountType.equals(1) ) {
-            return bankAccountRepository.countByCostumerIdAndBankAccountType(bankAccountId, BankAccountType.saving_account);
+            return bankAccountRepository.countByCostumerIdAndBankAccountType(costumerId, BankAccountType.saving_account);
         }
 
         if(bankAccountType.equals(2) ) {
-            return bankAccountRepository.countByCostumerIdAndBankAccountType(bankAccountId, BankAccountType.current_account);
+            return bankAccountRepository.countByCostumerIdAndBankAccountType(costumerId, BankAccountType.current_account);
         }
 
         if(bankAccountType.equals(3) ) {
-            return bankAccountRepository.countByCostumerIdAndBankAccountType(bankAccountId, BankAccountType.fixed_term_account);
+            return bankAccountRepository.countByCostumerIdAndBankAccountType(costumerId, BankAccountType.fixed_term_account);
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de cuenta bancaria es incorrecto", null);

@@ -18,25 +18,25 @@ public class MovementController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Movement> createMovement(@RequestBody Movement movement){
         System.out.println(movement);
-        return movementService.createCostumer(Mono.just(movement));
+        return movementService.createMovement(movement);
     }
 
     @GetMapping(value = "get/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Movement> getMovementById(@PathVariable("id") Integer id){
-        return movementService.readCostumer(id);
+    public Mono<Movement> getMovementById(@PathVariable("id") String id){
+        return movementService.readMovement(id);
     }
 
     @PutMapping(value = "update/{id}")
     @ResponseBody
     public Mono<Movement> updateMovement(@RequestBody Movement movement){
-        return movementService.updateCostumer(movement);
+        return movementService.updateMovement(movement);
     }
 
     @DeleteMapping(value = "delete/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public Mono<Void> deleteMovementById(@PathVariable("id") Integer id){
-        return movementService.deleteCostumer(id);
+    public Mono<Void> deleteMovementById(@PathVariable("id") String id){
+        return movementService.deleteMovement(id);
     }
 
     @GetMapping(value = "getAll", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
