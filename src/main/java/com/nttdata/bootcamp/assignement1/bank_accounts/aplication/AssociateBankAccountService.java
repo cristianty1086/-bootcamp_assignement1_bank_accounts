@@ -1,7 +1,6 @@
 package com.nttdata.bootcamp.assignement1.bank_accounts.aplication;
 
 import com.nttdata.bootcamp.assignement1.bank_accounts.model.AssociateBankAccount;
-import com.nttdata.bootcamp.assignement1.bank_accounts.model.DebitCard;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
