@@ -20,5 +20,14 @@ public interface BankAccountService {
     Mono<Void> deleteBankAccount(String bankAccountId);
     // leer todas
     Flux<BankAccount> listarTodos();
-    Mono<Long> countAccountByType(BigInteger bankAccountId, Integer bankAccountType);
+
+    /**
+     * Devuelve el numero de cuentas bancarias que tiene un cliente
+     * @param costumerId
+     * @param bankAccountType
+     * @return
+     */
+    Mono<Long> countAccountByType(BigInteger costumerId, Integer bankAccountType);
+    // leer todas en un intervalo de tiempo
+    Flux<BankAccount> listarTodosBeetween(String dateInit, String dateEnd);
 }

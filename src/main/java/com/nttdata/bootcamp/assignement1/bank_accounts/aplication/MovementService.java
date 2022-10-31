@@ -16,4 +16,5 @@ public interface MovementService {
     Mono<Void> deleteMovement(String movementId);
     // leer todas
     Flux<Movement> listarTodos();
+    Flux<Movement> getLastTen(String debitCardId);
 }

@@ -38,4 +38,5 @@ public class BankAccount {
     int maxOperationWhithoutComision;
     double taxComision;
     double balance;
+    String createdAt;
 }

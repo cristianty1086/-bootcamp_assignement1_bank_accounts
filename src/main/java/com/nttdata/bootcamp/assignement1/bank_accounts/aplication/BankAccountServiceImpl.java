@@ -5,6 +5,8 @@ import com.nttdata.bootcamp.assignement1.bank_accounts.model.BankAccount;
 import com.nttdata.bootcamp.assignement1.bank_accounts.model.BankAccountType;
 import com.nttdata.bootcamp.assignement1.bank_accounts.utilities.AppConstants;
 import com.nttdata.bootcamp.assignement1.bank_accounts.utilities.BuilderUrl;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -25,6 +29,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Autowired
     BankAccountRepository bankAccountRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Mono<BankAccount> createBankAccount(BankAccount bankAccount) {
@@ -96,6 +102,35 @@ public class BankAccountServiceImpl implements BankAccountService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Una cuenta empresarial no puede tener cuenta de plazo fijo", null);
             }
         }
+
+        // buscar entre las cuentas, cuantos tienen deuda pendiente
+        String url = BuilderUrl.buildGetCreditsByCostumerId(bankAccount.getCostumerId());
+        String strBankAccount = restTemplate.getForObject(url, String.class);
+        JSONArray jsonArray = new JSONArray(strBankAccount);
+        int[] cuentas_pendientes = {0};
+        jsonArray.forEach(it -> {
+            JSONObject jsonObject = (JSONObject) it;
+            String nextDatePayment = jsonObject.getString("nextDatePayment");
+            if( nextDatePayment == null || nextDatePayment.isEmpty() ) {
+                LOGGER.warn("Sin informacion de fecha de pago siguiente");
+            } else {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                LocalDateTime d1 = LocalDateTime.parse(nextDatePayment, dtf);
+                LocalDateTime d2 = LocalDateTime.now();
+                if(d1.isBefore(d2)) {
+                    LOGGER.info("Tiene una deuda pendiente");
+                    cuentas_pendientes[0] += 1;
+                }
+            }
+        });
+
+        if( cuentas_pendientes[0] > 0 ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tiene un credito pendiente de pago, no podra crear una nueva cuenta bancaria", null);
+        }
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        bankAccount.setCreatedAt(LocalDateTime.now().format(dtf));
+
         return bankAccountRepository.save(bankAccount);
     }
 
@@ -145,5 +180,29 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de cuenta bancaria es incorrecto", null);
+    }
+
+    @Override
+    public Flux<BankAccount> listarTodosBeetween(String dateInit, String dateEnd) {
+        LOGGER.info("Solicitud realizada para el envio de todos los BankAccount en un periodo determinado");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
+        return bankAccountRepository.findAll().filter(a -> {
+            if( dateInit != null && dateEnd != null ) {
+                LocalDateTime d1 = LocalDateTime.parse(a.getCreatedAt(), dtf);
+                LocalDateTime d2 = LocalDateTime.parse(dateInit, dtf);
+                LocalDateTime d3 = LocalDateTime.parse(dateEnd, dtf);
+                return (d1.isAfter(d2) && d1.isBefore(d3));
+            } else if(dateInit != null) {
+                LocalDateTime d1 = LocalDateTime.parse(a.getCreatedAt(), dtf);
+                LocalDateTime d2 = LocalDateTime.parse(dateInit, dtf);
+                return d1.isAfter(d2);
+            } else if(dateEnd != null) {
+                LocalDateTime d1 = LocalDateTime.parse(a.getCreatedAt(), dtf);
+                LocalDateTime d3 = LocalDateTime.parse(dateEnd, dtf);
+                return d1.isBefore(d3);
+            } else {
+                return false;
+            }
+        });
     }
 }

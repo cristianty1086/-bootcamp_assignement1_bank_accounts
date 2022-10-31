@@ -42,4 +42,39 @@ public class BuilderUrl {
 
         return ss.toString();
     }
+
+    public static String buildGetDebitCard(String debitCardId) {
+        if(debitCardId == null) {
+            return  null;
+        }
+        StringBuilder ss = new StringBuilder();
+        ss.append(AppConstants.getCurrentUrl());
+        ss.append("/debit_card/get/");
+        ss.append(debitCardId);
+
+        return ss.toString();
+    }
+    public static String buildCreateMovement() {
+        StringBuilder ss = new StringBuilder();
+        ss.append(AppConstants.getCurrentUrl());
+        ss.append("/movement/create");
+
+        return ss.toString();
+    }
+    public static String buildGetCreditsByCostumerId(BigInteger costumerId) {
+        StringBuilder ss = new StringBuilder();
+        ss.append(AppConstants.getCurrentUrl());
+        ss.append("/credit/get_by_costumer");
+        ss.append(costumerId);
+
+        return ss.toString();
+    }
+    public static String buildGetAssociateBankAccount(String debitCardId) {
+        StringBuilder ss = new StringBuilder();
+        ss.append(AppConstants.getCurrentUrl());
+        ss.append("/associate_bank_account/get_by_debitcard");
+        ss.append(debitCardId);
+
+        return ss.toString();
+    }
 }
