@@ -38,7 +38,7 @@ jobs:
       with:
         context: ./
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5641c1e4e50e47a88fbe89b227bb8b6f }}/ms37-bank-accounts:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5641c1e4e50e47a88fbe89b227bb8b6f }}/ms37-bank-accounts:${{github.run_number }}
         file: ./Dockerfile
 
   deploy:
@@ -56,4 +56,4 @@ jobs:
         app-name: 'bootcamp37-bankaccounts'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_cab6cffd780a4f5a9b5bef591745b772 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5641c1e4e50e47a88fbe89b227bb8b6f }}/ms37-bank-accounts:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5641c1e4e50e47a88fbe89b227bb8b6f }}/ms37-bank-accounts:${{github.run_number }}'
