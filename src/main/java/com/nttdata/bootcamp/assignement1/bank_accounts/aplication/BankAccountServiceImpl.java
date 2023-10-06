@@ -47,6 +47,8 @@ public class BankAccountServiceImpl implements BankAccountService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Indique el tipo de cuenta", null);
         }
 
+        //a
+
         // Monto minimo de apertura igual a cero
         if( bankAccount.getMinimalOpenAmount() < 0 ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Monto minimo de apertura es de cero", null);
