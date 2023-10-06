@@ -50,6 +50,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         //a
         //b
         //c
+        //d
 
         // Monto minimo de apertura igual a cero
         if( bankAccount.getMinimalOpenAmount() < 0 ) {
