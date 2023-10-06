@@ -1,10 +1,10 @@
 server:
-  port: 443
+  port: 8084
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://bootcamp37-cristianty.azurewebsites.net/eureka/
+      defaultZone: http://localhost:9091/eureka
 
 resilience4j:
   instances:

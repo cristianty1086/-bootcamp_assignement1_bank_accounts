@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * DebitCardController define los endpoints
+ * para los movimientos
+ * @author Cristian TY / Nttdata
+ */
 @RestController
 @RequestMapping("movement")
 public class MovementController {

@@ -11,6 +11,11 @@ import reactor.core.publisher.Mono;
 import java.math.BigInteger;
 
 
+/**
+ * BankAccountController define los endpoints
+ * para las cuentas bancarias
+ * @author Cristian TY / Nttdata
+ */
 @RestController
 @RequestMapping("bank_account")
 public class BankAccountController {

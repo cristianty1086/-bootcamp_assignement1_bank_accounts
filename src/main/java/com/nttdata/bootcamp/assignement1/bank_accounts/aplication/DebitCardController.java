@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * DebitCardController define los endpoints
+ * para las tarjetas de debito
+ * @author Cristian TY / Nttdata
+ */
 @RestController
 @RequestMapping("debit_card")
 public class DebitCardController {

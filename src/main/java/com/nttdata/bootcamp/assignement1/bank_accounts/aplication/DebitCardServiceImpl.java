@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-@Service
+@Service("testerror")
 public class DebitCardServiceImpl implements DebitCardService {
 
     // LogBack

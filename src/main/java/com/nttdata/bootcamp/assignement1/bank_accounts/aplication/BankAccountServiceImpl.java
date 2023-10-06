@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Service
+@Service("testerror")
 public class BankAccountServiceImpl implements BankAccountService {
 
     // LogBack

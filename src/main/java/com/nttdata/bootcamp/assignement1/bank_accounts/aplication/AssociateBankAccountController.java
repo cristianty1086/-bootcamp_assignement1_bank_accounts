@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * AssociateBankAccountController define los endpoints
+ * @author Cristian TY / Nttdata
+ */
 @RestController
 @RequestMapping("associate_bank_account")
 public class AssociateBankAccountController {
